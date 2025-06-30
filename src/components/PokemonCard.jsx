@@ -1,7 +1,8 @@
 import {useEffect, useState} from "react";
 import axios from "axios";
+import './PokemonCard.css';
 
-function PokemonCard({name}) {
+function PokemonCard({url}) {
     const [pokemon, setPokemon] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("")
@@ -11,7 +12,7 @@ function PokemonCard({name}) {
             async function fetchPokemon() {
                 try {
                     setLoading(true);
-                    const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${name}`)
+                    const response = await axios.get(url)
                     setPokemon(response.data);
                     setError("");
                 } catch (error) {
@@ -23,19 +24,19 @@ function PokemonCard({name}) {
 
             fetchPokemon();
         },
-        [name]
+        [url]
     );
 
-    if (loading) return <p>Loading {name}</p>
+    if (loading) return <p>Loading {url}</p>
     if (error) return <p> {error} </p>
     if (!pokemon) return <p> No pokemons to show </p>
 
     return (
-        <div>
+        <div className={'pokemon-card'}>
             <h3>{pokemon.name}</h3>
             <img src={pokemon.sprites.front_default} alt={pokemon.name}/>
             <p> Weight: {pokemon.weight}</p>
-            <p> Moves: {pokemon.moves.lenght}</p>
+            <p> Moves: {pokemon.moves.length}</p>
             <p>Abilities</p>
             <ul>
                 {pokemon.abilities.map(ability => (
